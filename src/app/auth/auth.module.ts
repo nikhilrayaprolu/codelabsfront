@@ -13,7 +13,7 @@ import {
 } from '@nebular/theme';
 import {NgxLoginComponent} from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import {MatFormFieldModule, MatInputModule, MatStepperModule} from "@angular/material";
+
 
 
 @NgModule({
@@ -29,9 +29,6 @@ import {MatFormFieldModule, MatInputModule, MatStepperModule} from "@angular/mat
     NbStepperModule,
     NbAuthModule,
     ReactiveFormsModule,
-    MatStepperModule,
-    MatFormFieldModule,
-    MatInputModule,
   ],
   declarations: [
     // ... here goes our new components

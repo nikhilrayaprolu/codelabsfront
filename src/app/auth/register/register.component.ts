@@ -1,46 +1,233 @@
-import {ChangeDetectorRef, Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {NB_AUTH_OPTIONS, NbAuthResult, NbAuthService, NbRegisterComponent} from '@nebular/auth';
-import {Router} from "@angular/router";
-import {RegisterService} from "../../services/register.service";
-import {NbStepperComponent} from "@nebular/theme";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { NB_AUTH_OPTIONS, NbAuthSocialLink } from '@nebular/auth';
+
+import { NbAuthService } from '@nebular/auth';
+import { NbAuthResult } from '@nebular/auth';
+
+export const deepExtend = function (...objects: any[]): any {
+  if (arguments.length < 1 || typeof arguments[0] !== 'object') {
+    return false;
+  }
+
+  if (arguments.length < 2) {
+    return arguments[0];
+  }
+
+  const target = arguments[0];
+
+  // convert arguments to array and cut off target object
+  const args = Array.prototype.slice.call(arguments, 1);
+
+  let val, src;
+
+  args.forEach(function (obj: any) {
+    // skip argument if it is array or isn't object
+    if (typeof obj !== 'object' || Array.isArray(obj)) {
+      return;
+    }
+
+    Object.keys(obj).forEach(function (key) {
+      src = target[key]; // source value
+      val = obj[key]; // new value
+
+      // recursion prevention
+      if (val === target) {
+        return;
+
+        /**
+         * if new value isn't object then just overwrite by new value
+         * instead of extending.
+         */
+      } else if (typeof val !== 'object' || val === null) {
+        target[key] = val;
+
+        return;
+
+        // just clone arrays (and recursive clone objects inside)
+      } else if (Array.isArray(val)) {
+        target[key] = deepCloneArray(val);
+
+        return;
+
+        // custom cloning and overwrite for specific objects
+      } else if (isSpecificValue(val)) {
+        target[key] = cloneSpecificValue(val);
+
+        return;
+
+        // overwrite by new value if source isn't object or array
+      } else if (typeof src !== 'object' || src === null || Array.isArray(src)) {
+        target[key] = deepExtend({}, val);
+
+        return;
+
+        // source value and new value is objects both, extending...
+      } else {
+        target[key] = deepExtend(src, val);
+
+        return;
+      }
+    });
+  });
+
+  return target;
+};
+
+function isSpecificValue(val: any) {
+  return (
+    val instanceof Date
+    || val instanceof RegExp
+  ) ? true : false;
+}
+
+function cloneSpecificValue(val: any): any {
+  if (val instanceof Date) {
+    return new Date(val.getTime());
+  } else if (val instanceof RegExp) {
+    return new RegExp(val);
+  } else {
+    throw new Error('cloneSpecificValue: Unexpected situation');
+  }
+}
+
+/**
+ * Recursive cloning array.
+ */
+function deepCloneArray(arr: any[]): any {
+  const clone: any[] = [];
+  arr.forEach(function (item: any, index: any) {
+    if (typeof item === 'object' && item !== null) {
+      if (Array.isArray(item)) {
+        clone[index] = deepCloneArray(item);
+      } else if (isSpecificValue(item)) {
+        clone[index] = cloneSpecificValue(item);
+      } else {
+        clone[index] = deepExtend({}, item);
+      }
+    } else {
+      clone[index] = item;
+    }
+  });
+
+  return clone;
+}
+
+// getDeepFromObject({result: {data: 1}}, 'result.data', 2); // returns 1
+export function getDeepFromObject(object = {}, name: string, defaultValue?: any) {
+  const keys = name.split('.');
+  // clone the object
+  let level = deepExtend({}, object || {});
+  keys.forEach((k) => {
+    if (level && typeof level[k] !== 'undefined') {
+      level = level[k];
+    } else {
+      level = undefined;
+    }
+  });
+
+  return typeof level === 'undefined' ? defaultValue : level;
+}
+
+export function urlBase64Decode(str: string): string {
+  let output = str.replace(/-/g, '+').replace(/_/g, '/');
+  switch (output.length % 4) {
+    case 0: { break; }
+    case 2: { output += '=='; break; }
+    case 3: { output += '='; break; }
+    default: {
+      throw new Error('Illegal base64url string!');
+    }
+  }
+  return b64DecodeUnicode(output);
+}
+
+export function b64decode(str: string): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+  let output: string = '';
+
+  str = String(str).replace(/=+$/, '');
+
+  if (str.length % 4 === 1) {
+    throw new Error(`'atob' failed: The string to be decoded is not correctly encoded.`);
+  }
+
+  for (
+    // initialize result and counters
+    let bc: number = 0, bs: any, buffer: any, idx: number = 0;
+    // get next character
+    buffer = str.charAt(idx++);
+    // character found in table? initialize bit storage and add its ascii value;
+    ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer,
+      // and if not first of each 4 characters,
+      // convert the first 8 bits to one ascii character
+    bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0
+  ) {
+    // try to find character in table (0-63, not found => -1)
+    buffer = chars.indexOf(buffer);
+  }
+  return output;
+}
+
+// https://developer.mozilla.org/en/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#The_Unicode_Problem
+export function b64DecodeUnicode(str: any) {
+  return decodeURIComponent(Array.prototype.map.call(b64decode(str), (c: any) => {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+}
 
 @Component({
-  selector: "register",
+  selector: 'nb-register',
+  styleUrls: ['./register.component.scss'],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterComponent extends NbRegisterComponent {
-  user_id: number;
-  site: any = {
-    name : null,
-    subdomain : null
-  };
-  user_email: string;
-  user_token: string;
-  constructor(protected servicedummy: RegisterService,
-              protected service: NbAuthService,
+export class RegisterComponent {
+
+  redirectDelay: number = 0;
+  showMessages: any = {};
+  strategy: string = '';
+
+  submitted = false;
+  errors: string[] = [];
+  messages: string[] = [];
+  user: any = {};
+  socialLinks: NbAuthSocialLink[] = [];
+
+  constructor(protected service: NbAuthService,
               @Inject(NB_AUTH_OPTIONS) protected options = {},
               protected cd: ChangeDetectorRef,
               protected router: Router) {
-    super(service, options, cd, router);
+
+    this.redirectDelay = this.getConfigValue('forms.register.redirectDelay');
+    this.showMessages = this.getConfigValue('forms.register.showMessages');
+    this.strategy = this.getConfigValue('forms.register.strategy');
+    this.socialLinks = this.getConfigValue('forms.login.socialLinks');
   }
-  @ViewChild(NbStepperComponent) stepper: NbStepperComponent;
-  registeradmin(): void {
+
+  register(): void {
     this.errors = this.messages = [];
-    console.log(this.user)
-    this.servicedummy.register(this.user).subscribe((result: any) => {
-      this.user_email = result.email;
-      this.user_token = result.token_object;
-      this.stepper.next()
+    this.submitted = true;
 
-    });
-  }
-  register_site() {
-    this.servicedummy.register_site(this.user_email, this.site).subscribe((result:any) => {
-      if (result.organization) {
-        this.router.navigate(['auth/login']);
+    this.service.register(this.strategy, this.user).subscribe((result: NbAuthResult) => {
+      this.submitted = false;
+      if (result.isSuccess()) {
+        this.messages = result.getMessages();
+      } else {
+        this.errors = result.getErrors();
       }
+
+      const redirect = result.getRedirect();
+      if (redirect) {
+        setTimeout(() => {
+          return this.router.navigateByUrl(redirect);
+        }, this.redirectDelay);
+      }
+      this.cd.detectChanges();
     });
   }
 
+  getConfigValue(key: string): any {
+    return getDeepFromObject(this.options, key, null);
+  }
 }

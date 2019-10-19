@@ -1,0 +1,58 @@
+<nb-card>
+  <nb-card-body>
+    <form #form="ngForm" aria-labelledby="title">
+
+      <div class="form-control-group">
+        <nb-toggle [(ngModel)]="track.public" name="public"> Make Track Public</nb-toggle>
+      </div>
+      <div class="form-control-group">
+        <label class="label" for="input-title">Title:</label>
+        <input type="text" id="input-title" name="track-title" [(ngModel)]="track.title" nbInput fullWidth fieldSize="medium" placeholder="Title">
+      </div>
+      <div class="form-control-group">
+        <label class="label" for="input-description">Description:</label>
+        <input type="text" id="input-description" nbInput fullWidth fieldSize="medium" placeholder="Description" name="description" [(ngModel)]="track.description">
+      </div>
+      <div class="form-control-group">
+        <label class="label" for="input-image">Container:</label>
+        <input type="text" id="input-image" nbInput fullWidth fieldSize="medium" placeholder="Container" name="container" [(ngModel)]="track.container">
+      </div>
+      <div class="form-control-group">
+        <label class="label" for="input-installscript">Installation Script:</label>
+        <ngx-monaco-editor id="input-installscript" [options]="monacoeditor" name="installscript" [(ngModel)]="track.installscript"></ngx-monaco-editor>
+      </div>
+      <div class="form-control-group">
+        <label class="label" for="input-configscript">Configuration Script:</label>
+        <ngx-monaco-editor id="input-configscript" [options]="monacoeditor" name="configscript" [(ngModel)]="track.configscript"></ngx-monaco-editor>
+      </div>
+      <div class="form-control-group">
+        <label class="label" >Scenario:</label>
+        <nb-select placeholder="Select Scenario" [(selected)]="track.scenario">
+          <nb-option value="terminal">Terminal</nb-option>
+          <nb-option value="editor-terminal">Editor + Terminal</nb-option>
+          <nb-option value="iframe-terminal">Iframe + Terminal</nb-option>
+          <nb-option value="iframe-editor">Advanced Editor</nb-option>
+        </nb-select>
+      </div>
+      <div *ngIf="track.scenario === 'terminal'">
+        <input type="text" id="input-scenario-options-terminal" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option" [(ngModel)]="track.scenario_data.home_directory">
+
+      </div>
+      <div *ngIf="track.scenario === 'editor-terminal'">
+        <input type="text" id="input-scenario-options-editor" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option" [(ngModel)]="track.scenario_data.home_directory">
+      </div>
+      <div *ngIf="track.scenario === 'iframe-terminal'">
+        <input type="text" id="input-scenario-options-3" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option" [(ngModel)]="track.scenario_data.home_directory">
+        <input type="text" id="input-scenario-options-4" nbInput fullWidth fieldSize="medium" placeholder="Port" name="scenario-option" [(ngModel)]="track.scenario_data.port">
+      </div>
+      <div *ngIf="track.scenario === 'iframe-editor'">
+        <input type="text" id="input-scenario-options-5" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option" [(ngModel)]="track.scenario_data.home_directory">
+      </div>
+      <button nbButton class="float-right" (click)="updatetrack()">Update the track</button>
+      <button nbButton class="float-right" (click)="deletetrack()">Delete the track</button>
+      <button nbButton class="float-right" [routerLink]="['/pages/labrun',track.id]">Run the track</button>
+      <button nbButton class="float-right" (click)="buildtrack()">Build the track</button>
+    </form>
+  </nb-card-body>
+</nb-card>
+<div id="terminal"></div>

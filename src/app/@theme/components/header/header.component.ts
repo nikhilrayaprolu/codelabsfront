@@ -5,6 +5,7 @@ import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import {NbAuthService} from "@nebular/auth";
 
 @Component({
   selector: 'ngx-header',
@@ -45,7 +46,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private themeService: NbThemeService,
               private userService: UserData,
               private layoutService: LayoutService,
+              private authService: NbAuthService,
               private breakpointService: NbMediaBreakpointsService) {
+    this.authService.onTokenChange()
+      .subscribe((token) => {
+        if (token.isValid()) {
+          this.user = token.getPayload(); // here we receive a payload from the token and assigne it to our `user` variable
+          console.log(token.getPayload())
+        }
+
+      });
   }
 
   ngOnInit() {

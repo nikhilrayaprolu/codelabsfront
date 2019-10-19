@@ -20,6 +20,11 @@ import {
   NbToastrModule,
   NbWindowModule,
 } from '@nebular/theme';
+import {NbAuthJWTInterceptor, NbAuthJWTToken, NbAuthModule, NbPasswordAuthStrategy} from '@nebular/auth';
+import {server} from "./config";
+import {MonacoEditorModule} from "ngx-monaco-editor";
+import {AuthGuard} from "./auth-guard.service";
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,12 +42,50 @@ import {
     NbDialogModule.forRoot(),
     NbWindowModule.forRoot(),
     NbToastrModule.forRoot(),
+    MonacoEditorModule.forRoot(),
     NbChatModule.forRoot({
       messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
     }),
     CoreModule.forRoot(),
+    NbAuthModule.forRoot({
+      strategies: [
+        NbPasswordAuthStrategy.setup({
+          name: 'email',
+          token: {
+            class: NbAuthJWTToken,
+
+            key: 'access', // this parameter tells where to look for the token
+          },
+          baseEndpoint: server,
+          login: {
+            // ...
+            endpoint: '/auth/login',
+            redirect: {
+              success: 'pages/dashboard',
+              failure: null,
+            },
+          },
+          register: {
+            // ...
+            endpoint: '/auth/register',
+            redirect: {
+              success: 'auth/login',
+              failure: null,
+            },
+          },
+          resetPass: {
+            endpoint: '/auth/reset-pass',
+          },
+        }),
+      ],
+      forms: {},
+    }),
+    BsDropdownModule.forRoot(),
   ],
   bootstrap: [AppComponent],
+  providers: [
+    AuthGuard,
+  ],
 })
 export class AppModule {
 }

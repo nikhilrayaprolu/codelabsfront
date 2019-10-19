@@ -1,0 +1,74 @@
+
+
+<nb-card>
+  <nb-card-body [hidden]="!showchallenges">
+  <nb-layout>
+    <nb-layout-column class="colored-column-warning col-md-3" *ngIf="showchallenges && challenges">
+      <h4>{{challenges[currentchallenge].title}}</h4>
+      <div [innerHTML]="challenges[currentchallenge].notes"></div>
+      <button nbButton class="float-right" (click)="nextchallenge()">Next Challenge</button>
+      <button nbButton class="float-right" (click)="previouschallenge()">Previous Challenge</button>
+
+    </nb-layout-column>
+    <nb-layout-column class="colored-column-info col-md-9">
+      <div id="loader">LOADING WIDE EDITOR</div>
+      <div id="container">
+        <div id="top">
+          <div id="sidebar">
+            <div class="header">
+
+            </div>
+            <div id="open-files">
+
+            </div>
+            <div id="folder-files">
+
+            </div>
+          </div>
+          <div id="code-area">
+            <div id="code-header">
+
+            </div>
+            <div id="code-editor">
+
+            </div>
+          </div>
+        </div>
+        <div id="bottom-term">
+          <div class="tabsheader" style="background-color: #222; height: 30px; overflow: hidden;">
+            <div class="tab" style="display: inline-block; color: #FFF; cursor: pointer; position: relative; padding: 0 15px; text-align: center;">
+              Terminal
+            </div>
+            <div class="btn-group">
+              <button>
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div id="terminal">
+
+          </div>
+          <div id="iframe-option">
+            <input type="text" id="input-port-number" nbInput fieldSize="medium" placeholder="Port Number" name="port-number" [(ngModel)]="porttoconnect">
+            <button nbButton class="float-right" (click)="startiframe()">Connect</button>
+          </div>
+          <div id="iframeshow" [innerHtml]="iframeelement">
+
+          </div>
+        </div>
+      </div>
+      <!--<script src="./assets/js/monaco-editor/min/vs/loader.js"></script>-->
+      <!--<script src="http://localhost:8887/code.js"></script>-->
+
+    </nb-layout-column>
+  </nb-layout>
+  </nb-card-body>
+  <nb-card-body [hidden]="showchallenges" *ngIf="track">
+    <h3>{{track.title}}</h3>
+    <p>{{track.description}}</p>
+    <button nbButton class="float-right" (click)="nextchallenge()">Next Challenge</button>
+    <button nbButton class="float-right" (click)="previouschallenge()">Previous Challenge</button>
+
+  </nb-card-body>
+
+</nb-card>
