@@ -1,0 +1,78 @@
+<nb-card>
+  <nb-card-body>
+    <form #form="ngForm" aria-labelledby="title">
+      <div class="form-control-group">
+        <label class="label" for="input-topic">Topic:</label>
+        <input type="text" id="input-topic" name="topic" [(ngModel)]="newlab.topic" nbInput fullWidth fieldSize="medium" placeholder="Topic">
+      </div>
+      <div class="form-control-group">
+        <label class="label" for="input-tags">Tags:</label>
+        <input type="text" id="input-tags" nbInput fullWidth fieldSize="medium" placeholder="Tags" name="tags" [(ngModel)]="newlab.tags">
+      </div>
+      <div class="form-control-group">
+        <label class="label">Timelimit:</label>
+        <ngb-timepicker name="timelimit" [(ngModel)]="newlab.timelimit"></ngb-timepicker>
+      </div>
+      <p>Tracks</p>
+      <div *ngFor="let track of tracks; let trackindex = index; ">
+        <p>Track {{trackindex + 1}}</p>
+        <div class="form-control-group">
+          <label class="label" for="input-title">Title:</label>
+          <input type="text" id="input-title" name="track-title{{trackindex}}" [(ngModel)]="track.title" nbInput fullWidth fieldSize="medium" placeholder="Title">
+        </div>
+        <div class="form-control-group">
+          <label class="label" for="input-description">Description:</label>
+          <input type="text" id="input-description" nbInput fullWidth fieldSize="medium" placeholder="Description" name="description{{trackindex}}" [(ngModel)]="tracks[trackindex].desciption">
+        </div>
+        <div class="form-control-group">
+          <label class="label" for="input-image">Container:</label>
+          <input type="text" id="input-image" nbInput fullWidth fieldSize="medium" placeholder="Container" name="container{{trackindex}}" [(ngModel)]="tracks[trackindex].container">
+        </div>
+        <div class="form-control-group">
+          <label class="label" for="input-installscript">Installation Script:</label>
+          <ngx-monaco-editor id="input-installscript" [options]="monacoeditor" name="installscript{{trackindex}}" [(ngModel)]="tracks[trackindex].installscript"></ngx-monaco-editor>
+        </div>
+        <div class="form-control-group">
+          <label class="label" for="input-configscript">Configuration Script:</label>
+          <ngx-monaco-editor id="input-configscript" [options]="monacoeditor" name="configscript{{trackindex}}" [(ngModel)]="tracks[trackindex].configscript"></ngx-monaco-editor>
+        </div>
+        <div class="form-control-group">
+          <label class="label" for="input-scenario">Scenario:</label>
+          <input type="text" id="input-scenario" nbInput fullWidth fieldSize="medium" placeholder="Scenario" name="scenario{{trackindex}}" [(ngModel)]="tracks[trackindex].scenario">
+        </div>
+        <p>Challenges</p>
+        <div *ngFor="let challenge of track.challenges; let challengeindex = index;">
+          <p>Challenge {{challengeindex + 1}}</p>
+          <div class="form-control-group">
+            <label class="label" for="input-challengetitle">Title:</label>
+            <input type="text" id="input-challengetitle" nbInput fullWidth fieldSize="medium" placeholder="Title" name="challengetitle{{challengeindex}}" [(ngModel)]="challenge.title">
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-notes">Notes:</label>
+            <ckeditor [editor]="Editor" id="input-notes" data="<p>Hello, world!</p>" name="notes{{challengeindex}}" [(ngModel)]="challenge.notes" ></ckeditor>
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-setup">Setup Script:</label>
+            <ngx-monaco-editor id="input-setup" [options]="monacoeditor" [(ngModel)]="track.challenges[challengeindex].setupscript" name="setupscript{{challengeindex}}"></ngx-monaco-editor>
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-check">Check:</label>
+            <ngx-monaco-editor id="input-check" [options]="monacoeditor" [(ngModel)]="track.challenges[challengeindex].checkscript" name="checkscript{{challengeindex}}"></ngx-monaco-editor>
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-clean">Clean:</label>
+            <ngx-monaco-editor id="input-clean" [options]="monacoeditor" [(ngModel)]="track.challenges[challengeindex].cleanscript" name="cleanscript{{challengeindex}}"></ngx-monaco-editor>
+          </div>
+        </div>
+        <button nbButton size="tiny"  (click)="addNewChallenge(track)">Add More Challenges</button>
+        <button nbButton size="tiny" (click)="removeNewChallenge(track)">Remove Last Challenges</button>
+
+      </div>
+      <button nbButton  size="small" (click)="addNewTrack()">Add More Tracks</button>
+      <button nbButton size="small" (click)="removeNewTrack()">Remove Last Track</button>
+    </form>
+    <div>
+    <button nbButton class="float-right" (click)="saveimageconfig()">Submit the New Lab</button>
+    </div>
+  </nb-card-body>
+</nb-card>

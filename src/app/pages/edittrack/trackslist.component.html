@@ -1,0 +1,14 @@
+<nb-card>
+  <nb-card-body>
+    <nb-layout-column class="colored-column-warning">Second</nb-layout-column>
+    <nb-layout-column class="colored-column-info">
+      <nb-card accent="info" *ngFor="let track of mytracks">
+        <nb-card-header>Track Title:<p>{{track.title}}</p>Track Container<p>{{track.container}}</p>Track Topic<p>{{track.topic}}</p></nb-card-header>
+        <nb-card-body>
+          Track Description:<p>{{track.description}}</p>
+          <button nbButton size="tiny"  (click)="edittrack(track)">Edit Track</button>
+        </nb-card-body>
+      </nb-card>
+    </nb-layout-column>
+  </nb-card-body>
+</nb-card>
