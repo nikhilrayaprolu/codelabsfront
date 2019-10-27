@@ -1,0 +1,36 @@
+<nb-card>
+  <nb-card-header>
+    <p>List of Student submissions in Course {{courseid}} and Track {{trackid}}</p>
+    <p>Total number of Tracks: {{number_of_tracks}}</p>
+    <p>Total number of Students started assignment {{total_number_of_students }}</p>
+    <p>Total number of Submissions {{total_number_of_submissions}}</p>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="container">
+      <div class="row">
+        <nb-card accent="info" *ngFor="let submission of list_of_submissions" class="col-md-3">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Student id</th>
+              <th scope="col">Grade</th>
+              <th scope="col">Graded</th>
+              <th scope="col">Check Assignment</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let submission of list_of_submissions; index as i">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ submission.student_id }}</td>
+              <td>{{ submission.grade }}</td>
+              <td>{{ submission.graded }}</td>
+              <td><a [routerLink]="['/pages/evalsubmission', submission.track_id, submission.course_id, submission.student_id, i]">Check Submission</a></td>
+            </tr>
+            </tbody>
+          </table>
+        </nb-card>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

@@ -11,11 +11,25 @@ import {TrackslistService} from "../../services/trackslist.service";
   templateUrl: './trackslist.component.html',
 })
 export class TrackslistComponent implements OnDestroy {
-  mytracks = []
+  mytracks = [];
+  showpublictrack = false;
   constructor(private themeService: NbThemeService, private trackslistservice: TrackslistService) {
     this.trackslistservice.gettrackslist().subscribe((result: any) => {
       this.mytracks = result.user_tracks;
     })
+  }
+  changetracks() {
+    console.log(event);
+    if (this.showpublictrack) {
+      this.trackslistservice.getpublictracks().subscribe((result: any) => {
+        this.mytracks = result.public_tracks;
+      })
+    } else {
+      this.trackslistservice.gettrackslist().subscribe((result: any) => {
+        this.mytracks = result.user_tracks;
+      })
+    }
+
   }
 
   ngOnDestroy() {

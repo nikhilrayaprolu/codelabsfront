@@ -19,6 +19,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import {MonacoEditorModule} from "ngx-monaco-editor";
 import {LabrunComponent} from "./labrun.component";
 import {BsDropdownModule} from "ngx-bootstrap";
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import {BsDropdownModule} from "ngx-bootstrap";
     CKEditorModule,
     MonacoEditorModule,
     NbLayoutModule,
-    BsDropdownModule
+    BsDropdownModule,
+    RouterModule
   ],
   declarations: [
     LabrunComponent,

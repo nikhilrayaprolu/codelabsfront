@@ -25,40 +25,54 @@
           <input type="text" id="input-description" nbInput fullWidth fieldSize="medium" placeholder="Description" name="description{{trackindex}}" [(ngModel)]="tracks[trackindex].description">
         </div>
         <div class="form-control-group">
-          <label class="label" for="input-image">Container:</label>
-          <input type="text" id="input-image" nbInput fullWidth fieldSize="medium" placeholder="Container" name="container{{trackindex}}" [(ngModel)]="tracks[trackindex].container">
-        </div>
-        <div class="form-control-group">
-          <label class="label" for="input-installscript">Installation Script:</label>
-          <ngx-monaco-editor id="input-installscript" [options]="monacoeditor" name="installscript{{trackindex}}" [(ngModel)]="tracks[trackindex].installscript"></ngx-monaco-editor>
-        </div>
-        <div class="form-control-group">
-          <label class="label" for="input-configscript">Configuration Script:</label>
-          <ngx-monaco-editor id="input-configscript" [options]="monacoeditor" name="configscript{{trackindex}}" [(ngModel)]="tracks[trackindex].configscript"></ngx-monaco-editor>
-        </div>
-        <div class="form-control-group">
-          <label class="label" >Scenario:</label>
-          <nb-select placeholder="Select Scenario" [(selected)]="tracks[trackindex].scenario">
-            <nb-option value="terminal">Terminal</nb-option>
-            <nb-option value="editor-terminal">Editor + Terminal</nb-option>
-            <nb-option value="iframe-terminal">Iframe + Terminal</nb-option>
-            <nb-option value="iframe-editor">Advanced Editor</nb-option>
+          <nb-select placeholder="Select Type" [(selected)]="tracks[trackindex].labtype">
+            <nb-option value="colab">Google Colab</nb-option>
+            <nb-option value="own">Own Lab</nb-option>
           </nb-select>
         </div>
-        <div *ngIf="tracks[trackindex].scenario === 'terminal'">
-          <input type="text" id="input-scenario-options-terminal" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option{{trackindex}}" [(ngModel)]="tracks[trackindex].scenario_data.home_directory">
+        <div *ngIf="tracks[trackindex].labtype == 'colab'">
+          <div class="form-control-group">
+            <label class="label" for="input-colab">Link to Google Colab:</label>
+            <input type="text" id="input-colab" nbInput fullWidth fieldSize="medium" placeholder="Colab Link" name="colab{{trackindex}}" [(ngModel)]="tracks[trackindex].colablink">
+          </div>
+        </div>
+        <div *ngIf="tracks[trackindex].labtype == 'own'">
+          <div class="form-control-group">
+            <label class="label" for="input-image">Container:</label>
+            <input type="text" id="input-image" nbInput fullWidth fieldSize="medium" placeholder="Container" name="container{{trackindex}}" [(ngModel)]="tracks[trackindex].container">
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-installscript">Installation Script:</label>
+            <ngx-monaco-editor id="input-installscript" [options]="monacoeditor" name="installscript{{trackindex}}" [(ngModel)]="tracks[trackindex].installscript"></ngx-monaco-editor>
+          </div>
+          <div class="form-control-group">
+            <label class="label" for="input-configscript">Configuration Script:</label>
+            <ngx-monaco-editor id="input-configscript" [options]="monacoeditor" name="configscript{{trackindex}}" [(ngModel)]="tracks[trackindex].configscript"></ngx-monaco-editor>
+          </div>
+          <div class="form-control-group">
+            <label class="label" >Scenario:</label>
+            <nb-select placeholder="Select Scenario" [(selected)]="tracks[trackindex].scenario">
+              <nb-option value="terminal">Terminal</nb-option>
+              <nb-option value="editor-terminal">Editor + Terminal</nb-option>
+              <nb-option value="iframe-terminal">Iframe + Terminal</nb-option>
+              <nb-option value="iframe-editor">Advanced Editor</nb-option>
+            </nb-select>
+          </div>
+          <div *ngIf="tracks[trackindex].scenario === 'terminal'">
+            <input type="text" id="input-scenario-options-terminal" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option{{trackindex}}" [(ngModel)]="tracks[trackindex].scenario_data.home_directory">
 
-        </div>
-        <div *ngIf="tracks[trackindex].scenario === 'editor-terminal'">
-          <input type="text" id="input-scenario-options-editor" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option{{trackindex}}" [(ngModel)]="tracks[trackindex].scenario_data.home_directory">
-        </div>
-        <div *ngIf="tracks[trackindex].scenario === 'iframe-terminal'">
-          <input type="text" id="input-scenario-options-3" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option{{trackindex}}" [(ngModel)]="tracks[trackindex].scenario_data.home_directory">
-          <input type="text" id="input-scenario-options-4" nbInput fullWidth fieldSize="medium" placeholder="Port" name="scenario-option{{trackindex}}" [(ngModel)]="tracks[trackindex].scenario_data.port">
-        </div>
-        <div *ngIf="tracks[trackindex].scenario === 'iframe-editor'">
-          <input type="text" id="input-scenario-options-5" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option{{trackindex}}" [(ngModel)]="tracks[trackindex].scenario_data.home_directory">
+          </div>
+          <div *ngIf="tracks[trackindex].scenario === 'editor-terminal'">
+            <input type="text" id="input-scenario-options-editor" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option{{trackindex}}" [(ngModel)]="tracks[trackindex].scenario_data.home_directory">
+          </div>
+          <div *ngIf="tracks[trackindex].scenario === 'iframe-terminal'">
+            <input type="text" id="input-scenario-options-3" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option{{trackindex}}" [(ngModel)]="tracks[trackindex].scenario_data.home_directory">
+            <input type="text" id="input-scenario-options-4" nbInput fullWidth fieldSize="medium" placeholder="Port" name="scenario-option{{trackindex}}" [(ngModel)]="tracks[trackindex].scenario_data.port">
+          </div>
+          <div *ngIf="tracks[trackindex].scenario === 'iframe-editor'">
+            <input type="text" id="input-scenario-options-5" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option{{trackindex}}" [(ngModel)]="tracks[trackindex].scenario_data.home_directory">
 
+          </div>
         </div>
         <p>Challenges</p>
         <div *ngFor="let challenge of track.challenges; let challengeindex = index;">
@@ -83,6 +97,10 @@
             <label class="label" for="input-clean">Clean:</label>
             <ngx-monaco-editor id="input-clean" [options]="monacoeditor" [(ngModel)]="track.challenges[challengeindex].cleanscript" name="cleanscript{{challengeindex}}"></ngx-monaco-editor>
           </div>
+          <div class="form-control-group">
+            <label class="label" for="input-challengeposition">Challenge Position:</label>
+            <input type="text" id="input-challengeposition" nbInput fullWidth fieldSize="medium" placeholder="Title" name="challengeposition{{challengeindex}}" [(ngModel)]="track.challenges[challengeindex].challenge_position">
+          </div>
         </div>
         <button nbButton size="tiny"  (click)="addNewChallenge(track)">Add More Challenges</button>
         <button nbButton size="tiny" (click)="removeNewChallenge(track)">Remove Last Challenges</button>
@@ -92,7 +110,7 @@
       <button nbButton size="small" (click)="removeNewTrack()">Remove Last Track</button>
     </form>
     <div>
-    <button nbButton class="float-right" (click)="saveimageconfig()">Submit the New Lab</button>
+      <button nbButton class="float-right" (click)="saveimageconfig()">Submit the New Lab</button>
     </div>
   </nb-card-body>
 </nb-card>

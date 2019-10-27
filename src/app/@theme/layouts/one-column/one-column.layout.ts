@@ -15,7 +15,7 @@ import {Location} from "@angular/common";
         <ng-content select="nb-menu"></ng-content>
       </nb-sidebar>
 
-      <nb-layout-column>
+      <nb-layout-column [ngClass]="{'on_not_menu': showMenu == false}">
         <ng-content select="router-outlet"></ng-content>
       </nb-layout-column>
 

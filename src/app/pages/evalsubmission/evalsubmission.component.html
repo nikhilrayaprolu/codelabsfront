@@ -1,0 +1,45 @@
+<nb-card>
+  <nb-layout>
+    <nb-layout-column class="colored-column-warning col-md-3">
+
+      <button nbButton class="float-right" (click)="nextsubmission()">Next Submission</button>
+      <button nbButton class="float-right" (click)="previoussubmission()">Previous Submission</button>
+      <div>
+        <label class="label" for="input-grade">Grade:</label>
+        <input type="text" id="input-grade" nbInput fieldSize="medium" placeholder="Grade" name="Grade" [(ngModel)]="grade">
+        <button nbButton class="float-right" (click)="gradesubmission()">Submit Grade</button>
+      </div>
+      <button nbButton class="float-right" (click)="runcode()">Run Code</button>
+
+    </nb-layout-column>
+    <nb-layout-column class="colored-column-info col-md-9">
+      <div id="loader">LOADING WIDE EDITOR</div>
+      <div id="container">
+        <div id="top" style="display: flex">
+          <div id="sidebar">
+            <div class="header">
+
+            </div>
+            <div id="open-files">
+
+            </div>
+            <div id="folder-files">
+
+            </div>
+          </div>
+          <div id="code-area">
+            <div id="code-header">
+
+            </div>
+            <div id="code-editor">
+
+            </div>
+          </div>
+          <div id="iframe-area" style="display: none; height: 100%; flex-grow: 1">
+            <iframe id="iframe-block" style="height: 100%; width: 100%"></iframe>
+          </div>
+        </div>
+      </div>
+    </nb-layout-column>
+  </nb-layout>
+</nb-card>

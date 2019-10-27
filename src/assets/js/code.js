@@ -8,8 +8,10 @@ var WIDE = {
     settings: {
         server_url: "", //change it if it is hosted in a different folder than the index.html
         persistent_session: false, //set to false if you do not want the keys to be stored in localStorage
-        plugins: []
+        plugins: [],
+      evaluate: false,
     },
+
 
     //globals
     key: "KEY",
@@ -25,8 +27,11 @@ var WIDE = {
     console_open: false,
     files_list_open: false,
 
-	init: function(server_url)
+	init: function(server_url, evaluate=false)
 	{
+	  if (evaluate) {
+	    WIDE.settings.evaluate = true;
+    }
     WIDE.settings.server_url = server_url;
 		this.container = document.getElementById('container');
 		this.sidebar = document.getElementById('sidebar');
@@ -107,8 +112,18 @@ var WIDE = {
 			file_info.editor.layout();
 			return file_info.editor;
 		}
+    console.log(file_info);
+		if (file_info.name.split('.').pop() == 'html' || file_info.name.split('.').pop() == 'ipynb') {
+      document.getElementById('code-area').style.display = 'none';
+      document.getElementById('iframe-area').style.display = 'inline-block';
+      document.getElementById('iframe-block').srcdoc = file_info.content;
 
-        //create container
+    } else {
+      document.getElementById('code-area').style.display = 'inline-block';
+      document.getElementById('iframe-area').style.display = 'none';
+
+    }
+
 		var editor_element = document.createElement("div");
 		editor_element.classList.add("editor-wrapper");
 		this.editor_container.appendChild( editor_element );
@@ -117,15 +132,27 @@ var WIDE = {
 		//a model is a file content
 		var model = monaco.editor.createModel("", "javascript");
 		file_info.model = model;
-
+    var editor = null;
 		//an editor is a view of a model
-		var editor = monaco.editor.create( editor_element, {
-			value: "",
-			model: model,
-			language: 'javascript',
-			theme: 'vs-dark',
-			folding: true
-		});
+    if (WIDE.settings.evaluate) {
+      editor = monaco.editor.create( editor_element, {
+        value: "",
+        model: model,
+        language: 'javascript',
+        theme: 'vs-dark',
+        folding: true,
+        readOnly: true
+      });
+    } else {
+      editor = monaco.editor.create( editor_element, {
+        value: "",
+        model: model,
+        language: 'javascript',
+        theme: 'vs-dark',
+        folding: true
+      });
+    }
+
 		file_info.editor = editor;
 		editor.file_info = file_info;
 
@@ -179,6 +206,16 @@ var WIDE = {
 		{
 			WIDE.close( file_info.name );
 		}
+    if (file_info.name.split('.').pop() == 'html' || file_info.name.split('.').pop() == 'ipynb') {
+      document.getElementById('code-area').style.display = 'none';
+      document.getElementById('iframe-area').style.display = 'inline-block';
+      document.getElementById('iframe-block').srcdoc = file_info.content;
+
+    } else {
+      document.getElementById('code-area').style.display = 'inline-block';
+      document.getElementById('iframe-area').style.display = 'none';
+
+    }
 
         return file_info;
 	},

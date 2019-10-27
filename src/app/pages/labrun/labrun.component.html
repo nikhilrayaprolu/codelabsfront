@@ -1,19 +1,18 @@
-
-
-<nb-card>
-  <nb-card-body [hidden]="!showchallenges">
+<div [hidden]="!showchallenges">
   <nb-layout>
     <nb-layout-column class="colored-column-warning col-md-3" *ngIf="showchallenges && challenges">
       <h4>{{challenges[currentchallenge].title}}</h4>
       <div [innerHTML]="challenges[currentchallenge].notes"></div>
       <button nbButton class="float-right" (click)="nextchallenge()">Next Challenge</button>
       <button nbButton class="float-right" (click)="previouschallenge()">Previous Challenge</button>
-
+      <button nbButton class="float-right" (click)="submitlab()" (disabled)="submitted"><p *ngIf="submitted">Already Submitted</p><p *ngIf="!submitted">Submit Lab</p></button>
+      <button nbButton class="float-right" (click)="snapshotcontainer()" *ngIf="this.courseid == 'instructor'">Present to students the current project</button>
+      <p *ngIf="submitted">Changes made to this lab will be reflected in the submitted code immediately</p>
     </nb-layout-column>
     <nb-layout-column class="colored-column-info col-md-9">
-      <div id="loader">LOADING WIDE EDITOR</div>
+      <div id="loader" *ngIf="showeditor">LOADING WIDE EDITOR</div>
       <div id="container">
-        <div id="top">
+        <div id="top" *ngIf="showeditor">
           <div id="sidebar">
             <div class="header">
 
@@ -36,23 +35,26 @@
         </div>
         <div id="bottom-term">
           <div class="tabsheader" style="background-color: #222; height: 30px; overflow: hidden;">
-            <div class="tab" style="display: inline-block; color: #FFF; cursor: pointer; position: relative; padding: 0 15px; text-align: center;">
+            <div class="tab">
               Terminal
             </div>
-            <div class="btn-group">
+            <div class="tab" *ngFor="let iframe of iframe_tabs">
+              <a [href]="iframe.address" target="_blank"> navigate to port {{iframe.port}}</a>
+            </div>
+            <div class="tab btn-group">
               <button>
                 <i class="fa fa-plus" aria-hidden="true"></i>
               </button>
             </div>
           </div>
-          <div id="terminal">
+          <div *ngIf="showterminal" id="terminal">
 
           </div>
           <div id="iframe-option">
             <input type="text" id="input-port-number" nbInput fieldSize="medium" placeholder="Port Number" name="port-number" [(ngModel)]="porttoconnect">
-            <button nbButton class="float-right" (click)="startiframe()">Connect</button>
+            <button nbButton class="float-right" (click)="startiframe(porttoconnect)">Connect</button>
           </div>
-          <div id="iframeshow" [innerHtml]="iframeelement">
+          <div *ngIf="inlineiframe" id="iframeshow" [innerHtml]="iframeelement">
 
           </div>
         </div>
@@ -62,13 +64,11 @@
 
     </nb-layout-column>
   </nb-layout>
-  </nb-card-body>
-  <nb-card-body [hidden]="showchallenges" *ngIf="track">
-    <h3>{{track.title}}</h3>
-    <p>{{track.description}}</p>
-    <button nbButton class="float-right" (click)="nextchallenge()">Next Challenge</button>
-    <button nbButton class="float-right" (click)="previouschallenge()">Previous Challenge</button>
+</div>
+<div [hidden]="showchallenges" *ngIf="track">
+  <h3>{{track.title}}</h3>
+  <p>{{track.description}}</p>
+  <button nbButton class="float-right" (click)="nextchallenge()">Next Challenge</button>
+  <button nbButton class="float-right" (click)="previouschallenge()">Previous Challenge</button>
 
-  </nb-card-body>
-
-</nb-card>
+</div>

@@ -8,19 +8,17 @@ import {
   NbRadioModule,
   NbSelectModule,
   NbListModule,
-  NbIconModule, NbInputModule, NbLayoutModule, NbToggleModule, NbProgressBarModule,
+  NbIconModule, NbInputModule, NbLayoutModule,
 } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { ThemeModule } from '../../@theme/theme.module';
 import { FormsModule } from '@angular/forms';
 import {NgbTimepickerModule} from "@ng-bootstrap/ng-bootstrap";
-import {EdittrackComponent} from "./edittrack.component";
-import {RouterModule} from "@angular/router";
-import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import {MonacoEditorModule} from "ngx-monaco-editor";
-import {NgxFileDropModule} from "ngx-file-drop";
-
+import {EvalsubmissionComponent} from "./evalsubmission.component";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   imports: [
@@ -40,16 +38,13 @@ import {NgxFileDropModule} from "ngx-file-drop";
     NgxEchartsModule,
     AmazingTimePickerModule,
     NgbTimepickerModule,
-    NbLayoutModule,
-    RouterModule,
-    NbToggleModule,
     CKEditorModule,
     MonacoEditorModule,
-    NgxFileDropModule,
-    NbProgressBarModule
+    NbLayoutModule,
+    RouterModule
   ],
   declarations: [
-    EdittrackComponent,
+    EvalsubmissionComponent,
   ],
 })
-export class EdittrackModule { }
+export class EvalsubmissionModule { }

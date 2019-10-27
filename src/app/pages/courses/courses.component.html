@@ -1,0 +1,17 @@
+<nb-card>
+  <nb-card-header>
+    <p>List of Courses</p>
+    <p>Total number of students: {{student_count }}</p>
+    <p> Total number of Non logged in User Runs {{temporary_containers }}</p>
+    <p> Total number of courses {{course_count}}</p>
+
+  </nb-card-header>
+  <nb-card-body>
+
+    <nb-list>
+      <nb-list-item *ngFor="let course of list_of_courses">
+        <a [routerLink]="['/pages/courseview', course]">{{ course }}</a>
+      </nb-list-item>
+    </nb-list>
+  </nb-card-body>
+</nb-card>

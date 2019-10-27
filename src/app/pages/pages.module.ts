@@ -10,6 +10,10 @@ import {LabnewModule} from "./labnew/labnew.module";
 import {LabrunModule} from "./labrun/labrun.module";
 import {TrackslistModule} from "./trackslist/trackslist.module";
 import {EdittrackModule} from "./edittrack/edittrack.module";
+import {CoursesModule} from "./courses/courses.module";
+import {CoursetrackModule} from "./coursetrack/coursetrack.module";
+import {CourseviewModule} from "./courseview/courseview.module";
+import {EvalsubmissionModule} from "./evalsubmission/evalsubmission.module";
 
 @NgModule({
   imports: [
@@ -21,7 +25,11 @@ import {EdittrackModule} from "./edittrack/edittrack.module";
     LabnewModule,
     LabrunModule,
     TrackslistModule,
-    EdittrackModule
+    EdittrackModule,
+    CoursesModule,
+    CoursetrackModule,
+    CourseviewModule,
+    EvalsubmissionModule
   ],
   declarations: [
     PagesComponent,

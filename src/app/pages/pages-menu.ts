@@ -17,6 +17,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link: '/pages/mytracks',
   },
   {
+    title: 'All Courses',
+    icon: 'home-outline',
+    link: '/pages/courses',
+  },
+  {
     title: 'FEATURES',
     group: true,
   },

@@ -29,6 +29,8 @@ export class LabnewComponent implements OnDestroy {
     installscript: '',
     configscript: '',
     scenario: '',
+    labtype: 'new',
+    colablink: '',
     scenario_data: {
       home_directory: '',
       port: '',
@@ -41,6 +43,7 @@ export class LabnewComponent implements OnDestroy {
     setupscript: '',
     checkscript: '',
     cleanscript: '',
+    challenge_position: 0,
   };
   constructor(private themeService: NbThemeService, private newlabservice: NewlabService) {
   }
@@ -51,7 +54,10 @@ export class LabnewComponent implements OnDestroy {
     this.tracks.push(this.cloneobject(this.newtrack));
   }
   addNewChallenge(track) {
-    track.challenges.push(this.cloneobject(this.newchallenge));
+    const challenge_position = track.challenges.length
+    let new_challenge = this.cloneobject(this.newchallenge)
+    new_challenge['challenge_position'] = challenge_position;
+    track.challenges.push(new_challenge);
   }
   removeNewChallenge(track) {
     track.challenges.pop()

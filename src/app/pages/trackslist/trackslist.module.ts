@@ -8,7 +8,7 @@ import {
   NbRadioModule,
   NbSelectModule,
   NbListModule,
-  NbIconModule, NbInputModule, NbLayoutModule,
+  NbIconModule, NbInputModule, NbLayoutModule, NbToggleModule,
 } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
@@ -38,7 +38,8 @@ import {RouterModule} from "@angular/router";
     AmazingTimePickerModule,
     NgbTimepickerModule,
     NbLayoutModule,
-    RouterModule
+    RouterModule,
+    NbToggleModule,
   ],
   declarations: [
     TrackslistComponent,

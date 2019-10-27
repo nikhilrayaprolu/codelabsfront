@@ -8,19 +8,13 @@ import {
   NbRadioModule,
   NbSelectModule,
   NbListModule,
-  NbIconModule, NbInputModule, NbLayoutModule, NbToggleModule, NbProgressBarModule,
+  NbIconModule, NbInputModule,
 } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
-import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { ThemeModule } from '../../@theme/theme.module';
 import { FormsModule } from '@angular/forms';
-import {NgbTimepickerModule} from "@ng-bootstrap/ng-bootstrap";
-import {EdittrackComponent} from "./edittrack.component";
+import {CourseviewComponent} from "./courseview.component";
 import {RouterModule} from "@angular/router";
-import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
-import {MonacoEditorModule} from "ngx-monaco-editor";
-import {NgxFileDropModule} from "ngx-file-drop";
-
 
 @NgModule({
   imports: [
@@ -38,18 +32,10 @@ import {NgxFileDropModule} from "ngx-file-drop";
     NbButtonModule,
     NbInputModule,
     NgxEchartsModule,
-    AmazingTimePickerModule,
-    NgbTimepickerModule,
-    NbLayoutModule,
-    RouterModule,
-    NbToggleModule,
-    CKEditorModule,
-    MonacoEditorModule,
-    NgxFileDropModule,
-    NbProgressBarModule
+    RouterModule
   ],
   declarations: [
-    EdittrackComponent,
+    CourseviewComponent,
   ],
 })
-export class EdittrackModule { }
+export class CourseviewModule { }

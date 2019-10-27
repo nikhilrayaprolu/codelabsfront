@@ -1,0 +1,19 @@
+<nb-card>
+  <nb-card-header>
+    <p>List of Tracks in Course {{courseid}}</p>
+    <p>Total number of Tracks: {{number_of_tracks}}</p>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="container">
+      <div class="row">
+        <nb-card accent="info" *ngFor="let track of list_of_tracks" class="col-md-3">
+          <nb-card-header>Track Title:<p>{{track.title}}</p>Track Container<p>{{track.container}}</p>Track Topic<p>{{track.topic}}</p></nb-card-header>
+          <nb-card-body>
+            Track Description:<p>{{track.description}}</p>
+            <button nbButton size="tiny"  [routerLink]="['/pages/coursetrack/',courseid, track.id]">View Submissions</button>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
