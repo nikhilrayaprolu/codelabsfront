@@ -12,6 +12,8 @@ import {CoursesComponent} from "./courses/courses.component";
 import {CourseviewComponent} from "./courseview/courseview.component";
 import {CoursetrackComponent} from "./coursetrack/coursetrack.component";
 import {EvalsubmissionComponent} from "./evalsubmission/evalsubmission.component";
+import {UserprofileComponent} from "./userprofile/userprofile.component";
+import {AuthGuard} from "../auth-guard.service";
 
 const routes: Routes = [{
   path: '',
@@ -66,10 +68,16 @@ const routes: Routes = [{
       component: EvalsubmissionComponent,
     },
     {
+      path: 'profile',
+      component: UserprofileComponent,
+    },
+    {
+      path: '', redirectTo: 'courses', pathMatch: 'full'
+    },
+    {
       path: '**',
       component: NotFoundComponent,
     },
-
   ],
 }];
 

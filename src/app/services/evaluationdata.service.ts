@@ -12,6 +12,8 @@ export class EvaluationdataService {
   constructor() { }
 
   changeassignments(new_assignments: any) {
-    this.submitted_assignment.next(new_assignments)
+    this.submitted_assignment.next(new_assignments);
+    console.log(this.submitted_assignment);
+    console.log(this.current_assignments);
   }
 }

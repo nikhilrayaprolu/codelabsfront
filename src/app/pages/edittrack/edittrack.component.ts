@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {TrackslistService} from "../../services/trackslist.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {FileSystemFileEntry, NgxFileDropEntry} from "ngx-file-drop";
 import {HttpEvent, HttpEventType, HttpResponse} from "@angular/common/http";
 
@@ -57,11 +57,22 @@ export class EdittrackComponent implements OnInit {
 
   constructor(private themeService: NbThemeService, private trackslistservice: TrackslistService,
               private route: ActivatedRoute, private router: Router) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+
+    this.router.events.subscribe((evt) => {
+      if (evt instanceof NavigationEnd) {
+        this.router.navigated = false;
+        window.scrollTo(0, 0);
+      }
+    });
     const trackid = this.route.snapshot.paramMap.get("trackid")
-    this.trackid = trackid
+    this.trackid = trackid;
     this.trackslistservice.gettrack(trackid).subscribe((result: any) => {
       this.track = result.track;
       this.challenges = result.challenges;
+      console.log(this.challenges)
     })
 
   }
@@ -95,14 +106,16 @@ export class EdittrackComponent implements OnInit {
         this.showchallenges = 1;
       }
       this.challengeindex += 1;
+      console.log(this.challenges)
     }
   }
   previouschallenge() {
     if (this.challengeindex > 0)
       this.challengeindex -= 1
-    if (this.challengeindex === 0) {
+    else if (this.challengeindex === 0) {
       this.showchallenges = 0;
       this.challengeindex = -1;
+      console.log(this.challenges)
     }
   }
   removechallenge(challengeindex) {
@@ -135,8 +148,8 @@ export class EdittrackComponent implements OnInit {
     this.showchallenges = 0
   }
   edittrackchallenges () {
-    this.challengeindex = 0;
     this.showchallenges = 1;
+    this.challengeindex = 0;
   }
   public files: NgxFileDropEntry[] = [];
   public dropped(files: NgxFileDropEntry[]) {
@@ -156,7 +169,8 @@ export class EdittrackComponent implements OnInit {
            const formData = new FormData()
            formData.append('file', file, droppedFile.relativePath)
 
-          this.trackslistservice.uploadFile(this.trackid, formData, droppedFile.relativePath)
+          this.trackslistservice.uploadFile(this.trackid, formData, droppedFile.relativePath,
+            'instructor', 'instructor')
             .subscribe((event: HttpEvent<any>) => {
             if (event.type === HttpEventType.UploadProgress) {
               // This is an upload progress event. Compute and show the % done:

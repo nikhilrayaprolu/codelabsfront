@@ -14,6 +14,7 @@ import {CoursesModule} from "./courses/courses.module";
 import {CoursetrackModule} from "./coursetrack/coursetrack.module";
 import {CourseviewModule} from "./courseview/courseview.module";
 import {EvalsubmissionModule} from "./evalsubmission/evalsubmission.module";
+import {UserprofileModule} from "./userprofile/userprofile.module";
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import {EvalsubmissionModule} from "./evalsubmission/evalsubmission.module";
     CoursesModule,
     CoursetrackModule,
     CourseviewModule,
-    EvalsubmissionModule
+    EvalsubmissionModule,
+    UserprofileModule
   ],
   declarations: [
     PagesComponent,

@@ -8,7 +8,7 @@ import {
   NbRadioModule,
   NbSelectModule,
   NbListModule,
-  NbIconModule, NbInputModule, NbLayoutModule,
+  NbIconModule, NbInputModule, NbLayoutModule, NbProgressBarModule, NbStepperModule,
 } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
@@ -20,6 +20,7 @@ import {MonacoEditorModule} from "ngx-monaco-editor";
 import {LabrunComponent} from "./labrun.component";
 import {BsDropdownModule} from "ngx-bootstrap";
 import {RouterModule} from '@angular/router';
+import {NgxFileDropModule} from "ngx-file-drop";
 
 @NgModule({
   imports: [
@@ -43,7 +44,10 @@ import {RouterModule} from '@angular/router';
     MonacoEditorModule,
     NbLayoutModule,
     BsDropdownModule,
-    RouterModule
+    RouterModule,
+    NbProgressBarModule,
+    NgxFileDropModule,
+    NbStepperModule
   ],
   declarations: [
     LabrunComponent,

@@ -25,7 +25,7 @@ export class CoursetrackComponent implements OnDestroy {
       this.list_of_submissions = result.list_of_submissions;
       this.total_number_of_students = result.total_number_of_students;
       this.total_number_of_submissions = result.total_number_of_submissions;
-      this.evaluationdata.changeassignments(this.list_of_submissions);
+      this.evaluationdata.changeassignments(result.list_of_submissions);
 
     })
   }

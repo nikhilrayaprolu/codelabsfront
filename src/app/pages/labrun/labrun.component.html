@@ -1,18 +1,60 @@
+<div [hidden]="showchallenges && challenges && challenges.length" *ngIf="track">
+  <h3>{{track.title}}</h3>
+  <p>{{track.description}}</p>
+  <div *ngIf="container_colab_webview">
+    <button nbButton (click)="startcolab()">Start Colab Notebook</button>
+  </div>
+  <button nbButton class="float-right" (click)="nextchallenge()">Next Challenge</button>
+  <button nbButton class="float-right" (click)="previouschallenge()">Previous Challenge</button>
+
+</div>
 <div [hidden]="!showchallenges">
   <nb-layout>
     <nb-layout-column class="colored-column-warning col-md-3" *ngIf="showchallenges && challenges">
-      <h4>{{challenges[currentchallenge].title}}</h4>
-      <div [innerHTML]="challenges[currentchallenge].notes"></div>
-      <button nbButton class="float-right" (click)="nextchallenge()">Next Challenge</button>
-      <button nbButton class="float-right" (click)="previouschallenge()">Previous Challenge</button>
-      <button nbButton class="float-right" (click)="submitlab()" (disabled)="submitted"><p *ngIf="submitted">Already Submitted</p><p *ngIf="!submitted">Submit Lab</p></button>
-      <button nbButton class="float-right" (click)="snapshotcontainer()" *ngIf="this.courseid == 'instructor'">Present to students the current project</button>
-      <p *ngIf="submitted">Changes made to this lab will be reflected in the submitted code immediately</p>
+      <div *ngFor="let challenge of challenges; let i = index">
+        <div *ngIf="i == currentchallenge" style="overflow:hidden;">
+          <span style="display:table;margin:0 auto;"><nb-icon (click)="previouschallenge()" icon="arrow-ios-back-outline"></nb-icon>Step {{i}} of {{challenges.length}}<nb-icon (click)="nextchallenge()" icon="arrow-ios-forward-outline"></nb-icon></span>
+          <h4>{{challenge.title}}</h4>
+          <div [innerHTML]="challenge.notes"></div>
+        </div>
+      </div>
+      <div style="overflow:hidden;">
+      <button nbButton size="small" class="float-left" (click)="submitlab()" (disabled)="submitted"><span *ngIf="submitted && !container_colab_webview">Submitted</span><span *ngIf="!submitted || container_colab_webview">Submit</span></button>
+      <button nbButton size="small" class="float-right" (click)="nextchallenge()" *ngIf="currentchallenge!=-1">Continue</button>
+        <p *ngIf="submitted && !container_colab_webview">Changes made to this lab will be reflected in the submitted code immediately</p>
+      </div>
+
+      <button nbButton size="small" (click)="snapshotcontainer()" *ngIf="this.courseid == 'instructor' && !container_colab_webview">Present to students the current project</button>
+      <nb-progress-bar *ngIf="!container_colab_webview" [value]="fileuploadprogress"></nb-progress-bar>
+      <div *ngIf="!container_colab_webview">
+        <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+                       (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" multiple="false" accept="zip">
+          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            Drop the files here
+            <button nbButton size="small" type="button" (click)="openFileSelector()">Browse Files</button>
+          </ng-template>
+        </ngx-file-drop>
+        <div class="upload-table">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Name</th>
+            </tr>
+            </thead>
+            <tbody class="upload-name-style">
+            <tr *ngFor="let item of files; let i=index">
+              <td><strong>{{ item.relativePath }}</strong></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <button nbButton size="small" class="float-left" *ngIf="!container_colab_webview" (click)="resetfolder()" >Reset Files</button>
+      <button nbButton size="small" class="float-right" *ngIf="!container_colab_webview" (click)="downloadfolder()">Download</button>
     </nb-layout-column>
-    <nb-layout-column class="colored-column-info col-md-9">
-      <div id="loader" *ngIf="showeditor">LOADING WIDE EDITOR</div>
+    <nb-layout-column class="colored-column-info col-md-9" style="padding: 0px;" *ngIf="!container_colab_webview">
       <div id="container">
-        <div id="top" *ngIf="showeditor">
+        <div id="top" *ngIf="showeditor && !showingiframe" style="display: flex">
           <div id="sidebar">
             <div class="header">
 
@@ -33,13 +75,19 @@
             </div>
           </div>
         </div>
+        <div id="iframe-embed">
+          <iframe id="iframe-block" style="height: 100%; width: 100%"></iframe>
+        </div>
         <div id="bottom-term">
           <div class="tabsheader" style="background-color: #222; height: 30px; overflow: hidden;">
-            <div class="tab">
+            <div class="tab" *ngIf="!showingiframe">
               Terminal
             </div>
+            <div class="tab" *ngIf="!showingiframe">
+              <button (click)="showeditorpanel()">Editor</button>
+            </div>
             <div class="tab" *ngFor="let iframe of iframe_tabs">
-              <a [href]="iframe.address" target="_blank"> navigate to port {{iframe.port}}</a>
+              <a [href]="iframe.address" target="_blank"> navigate to port {{iframe.port}}</a><button (click)="showiframe(iframe.address)">embed</button>
             </div>
             <div class="tab btn-group">
               <button>
@@ -47,6 +95,7 @@
               </button>
             </div>
           </div>
+
           <div *ngIf="showterminal" id="terminal">
 
           </div>
@@ -64,11 +113,4 @@
 
     </nb-layout-column>
   </nb-layout>
-</div>
-<div [hidden]="showchallenges" *ngIf="track">
-  <h3>{{track.title}}</h3>
-  <p>{{track.description}}</p>
-  <button nbButton class="float-right" (click)="nextchallenge()">Next Challenge</button>
-  <button nbButton class="float-right" (click)="previouschallenge()">Previous Challenge</button>
-
 </div>

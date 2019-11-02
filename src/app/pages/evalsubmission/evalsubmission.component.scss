@@ -22,3 +22,11 @@
 .tab {
   display: inline-block; color: #FFF; cursor: pointer; position: relative; padding: 0 15px; text-align: center;
 }
+.control-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: grey;
+}

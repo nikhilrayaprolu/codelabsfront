@@ -120,7 +120,7 @@ export class TrackslistService {
     };
     return this.http.post(server + '/getchallenge', params, httpOptions);
   }
-  uploadFile(trackid, formData, filename) {
+  uploadFile(trackid, formData, filename, courseid, studentid) {
     const httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'JWT ' + this.token
           }
@@ -128,7 +128,29 @@ export class TrackslistService {
       reportProgress: true
     };
 
-    return this.http.post(server + '/fileupload/'+ trackid +'/'+filename, formData, httpOptions)
+    return this.http.post(server + '/fileupload/' + trackid + '/' + filename
+      + '/' + courseid + '/' + studentid, formData, httpOptions)
+  }
+  downloadFile(trackid, courseid, studentid) {
+    const httpOptions = {
+      headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'JWT ' + this.token,
+        },
+      ),
+    };
+
+    return this.http.get(server + '/filedownload/' + trackid +
+      '/' + courseid + '/' + studentid, httpOptions)
+  }
+  resetFile(trackid, courseid, studentid) {
+    const httpOptions = {
+      headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'JWT ' + this.token
+        }
+      ),
+      reportProgress: true
+    };
+
+    return this.http.get(server + '/resetfile/' + trackid +
+      '/' + courseid + '/' + studentid, httpOptions)
   }
   deletetrackfolder(trackid) {
     const httpOptions = {

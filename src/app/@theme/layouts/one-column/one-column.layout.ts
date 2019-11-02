@@ -11,7 +11,7 @@ import {Location} from "@angular/common";
         <ngx-header></ngx-header>
       </nb-layout-header>
 
-      <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive *ngIf="showMenu">
+      <nb-sidebar class="menu-sidebar" tag="menu-sidebar" state="compacted" responsive *ngIf="showMenu">
         <ng-content select="nb-menu"></ng-content>
       </nb-sidebar>
 

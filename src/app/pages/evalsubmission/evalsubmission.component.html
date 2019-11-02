@@ -1,21 +1,9 @@
 <nb-card>
   <nb-layout>
-    <nb-layout-column class="colored-column-warning col-md-3">
-
-      <button nbButton class="float-right" (click)="nextsubmission()">Next Submission</button>
-      <button nbButton class="float-right" (click)="previoussubmission()">Previous Submission</button>
-      <div>
-        <label class="label" for="input-grade">Grade:</label>
-        <input type="text" id="input-grade" nbInput fieldSize="medium" placeholder="Grade" name="Grade" [(ngModel)]="grade">
-        <button nbButton class="float-right" (click)="gradesubmission()">Submit Grade</button>
-      </div>
-      <button nbButton class="float-right" (click)="runcode()">Run Code</button>
-
-    </nb-layout-column>
-    <nb-layout-column class="colored-column-info col-md-9">
-      <div id="loader">LOADING WIDE EDITOR</div>
+    <nb-layout-column>
+      <h5>Evaluating {{this.studentid}}'s {{this.trackid}} in course {{this.courseid}}</h5>
       <div id="container">
-        <div id="top" style="display: flex">
+        <div id="top" style="display: flex; height: 100%">
           <div id="sidebar">
             <div class="header">
 
@@ -43,3 +31,13 @@
     </nb-layout-column>
   </nb-layout>
 </nb-card>
+<div class="colored-column-warning control-bottom-bar">
+
+  <button nbButton (click)="previoussubmission()" *ngIf="serial_number > 0">Previous Submission</button>
+  <label class="label" for="input-grade" style="color: #ffffff">Grade:</label>
+  <input type="text" id="input-grade" nbInput fieldSize="medium" placeholder="Grade" name="Grade" [(ngModel)]="grade">
+  <button nbButton (click)="gradesubmission()">Submit Grade</button>
+  <button nbButton class="float-right" *ngIf="serial_number < submitted_assignments.length - 1" (click)="nextsubmission()">Next Submission</button>
+  <button nbButton class="float-right" (click)="runcode()">Run Code</button>
+
+</div>

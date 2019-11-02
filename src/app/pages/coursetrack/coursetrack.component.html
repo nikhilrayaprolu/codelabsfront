@@ -1,5 +1,6 @@
 <nb-card>
   <nb-card-header>
+    <h5>Listing the student submissions of {{this.trackid}} in course {{this.courseid}}</h5>
     <p>List of Student submissions in Course {{courseid}} and Track {{trackid}}</p>
     <p>Total number of Tracks: {{number_of_tracks}}</p>
     <p>Total number of Students started assignment {{total_number_of_students }}</p>
@@ -8,7 +9,8 @@
   <nb-card-body>
     <div class="container">
       <div class="row">
-        <nb-card accent="info" *ngFor="let submission of list_of_submissions" class="col-md-3">
+        <nb-card accent="info">
+          <nb-card-body>
           <table class="table table-striped">
             <thead>
             <tr>
@@ -29,6 +31,7 @@
             </tr>
             </tbody>
           </table>
+          </nb-card-body>
         </nb-card>
       </div>
     </div>

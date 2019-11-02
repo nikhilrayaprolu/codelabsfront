@@ -29,18 +29,36 @@ var WIDE = {
 
 	init: function(server_url, evaluate=false)
 	{
-	  if (evaluate) {
+    //buttons
+    WIDE.buttons.push({ name:"new", icon:"elusive-file-new", command: "new" });
+    WIDE.buttons.push({ name:"open file", className:'list-files-button', icon:"bootstrap-folder-open", command: "toggleFiles" });
+    WIDE.buttons.push({ name:"save current", icon:"bootstrap-import", command: "save" });
+    WIDE.buttons.push({ name:"settings", icon:"bootstrap-menu-hamburger", command: "settings" });
+    var container = document.querySelector("#sidebar .header");
+    for(var i in this.buttons)
+    {
+      var b = this.buttons[i];
+      var element = document.createElement("button");
+      if(b.icon)
+        element.innerHTML = '<svg class="icon"><use xlink:href="#si-'+b.icon+'"/></svg>';
+      else
+        element.innerHTML = b.name;
+      if(b.className)
+        element.className = b.className;
+      element.setAttribute("title",b.name);
+      element.dataset["command"] = b.command;
+      element.addEventListener("click",function(e){ WIDE.onCommand( this.dataset["command"], true ); });
+      container.appendChild(element);
+    }
+    if (evaluate) {
 	    WIDE.settings.evaluate = true;
     }
     WIDE.settings.server_url = server_url;
 		this.container = document.getElementById('container');
 		this.sidebar = document.getElementById('sidebar');
 		this.editor_container = document.getElementById('code-editor');
-
-		this.container.style.display = "none";
 		require.config({ paths: { 'vs': '/assets/js/monaco-editor/min/vs' }});
 		require(['vs/editor/editor.main'], function(){
-			document.getElementById('loader').style.display = "none";
 			WIDE.container.style.display = "";
 			WIDE.onReady();
 			WIDE.setKey('KEY');
@@ -56,22 +74,7 @@ var WIDE = {
                 return "Not all files are saved";
         }
 
-		var container = document.querySelector("#sidebar .header");
-		for(var i in this.buttons)
-		{
-			var b = this.buttons[i];
-			var element = document.createElement("button");
-			if(b.icon)
-				element.innerHTML = '<svg class="icon"><use xlink:href="#si-'+b.icon+'"/></svg>';
-			else
-				element.innerHTML = b.name;
-			if(b.className)
-				element.className = b.className;
-			element.setAttribute("title",b.name);
-			element.dataset["command"] = b.command;
-			element.addEventListener("click",function(e){ WIDE.onCommand( this.dataset["command"], true ); });
-			container.appendChild(element);
-		}
+
 
         this.console_element = document.querySelector("#console");
 	},
@@ -113,16 +116,19 @@ var WIDE = {
 			return file_info.editor;
 		}
     console.log(file_info);
-		if (file_info.name.split('.').pop() == 'html' || file_info.name.split('.').pop() == 'ipynb') {
-      document.getElementById('code-area').style.display = 'none';
-      document.getElementById('iframe-area').style.display = 'inline-block';
-      document.getElementById('iframe-block').srcdoc = file_info.content;
+		if (document.getElementById('iframe-area')) {
+      if (file_info.name.split('.').pop() == 'html' || file_info.name.split('.').pop() == 'ipynb') {
+        document.getElementById('code-area').style.display = 'none';
+        document.getElementById('iframe-area').style.display = 'inline-block';
+        document.getElementById('iframe-block').srcdoc = file_info.content;
 
-    } else {
-      document.getElementById('code-area').style.display = 'inline-block';
-      document.getElementById('iframe-area').style.display = 'none';
+      } else {
+        document.getElementById('code-area').style.display = 'inline-block';
+        document.getElementById('iframe-area').style.display = 'none';
 
+      }
     }
+
 
 		var editor_element = document.createElement("div");
 		editor_element.classList.add("editor-wrapper");
@@ -404,7 +410,7 @@ var WIDE = {
 	list: function( folder, skip_log, on_complete )
 	{
 		folder = this.processFolder(folder);
-
+    console.log(folder)
 		queryforEach("#sidebar .header button.sidebarmode",function(a){ a.classList.remove("selected"); });
 		document.querySelector(".list-files-button").classList.add("selected");
 		document.querySelector("#open-files").style.display = "none";
@@ -422,7 +428,7 @@ var WIDE = {
 			});
             return;
         }
-
+    console.log(folder)
 		if(!WIDE_SERVER.list( folder, false, inner_complete ))
 			return;
 
@@ -1166,11 +1172,6 @@ WIDE.commands.pwd = function( cmd, t ) { WIDE.toConsole( WIDE.current_folder + "
 WIDE.commands.toggleFiles = function( cmd, t ) { WIDE.toggleFiles(); }
 WIDE.commands.settings = function( cmd, t ) { WIDE.editSettings(); }
 
-//buttons
-WIDE.buttons.push({ name:"new", icon:"elusive-file-new", command: "new" });
-WIDE.buttons.push({ name:"open file", className:'list-files-button', icon:"bootstrap-folder-open", command: "toggleFiles" });
-WIDE.buttons.push({ name:"save current", icon:"bootstrap-import", command: "save" });
-WIDE.buttons.push({ name:"settings", icon:"bootstrap-menu-hamburger", command: "settings" });
 
 //helpers
 function queryforEach( selector,callback ) { var list = document.querySelectorAll(selector); for(var i = 0;i < list.length; ++i) callback( list[i] ); }

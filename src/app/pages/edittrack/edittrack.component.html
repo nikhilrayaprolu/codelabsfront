@@ -100,7 +100,7 @@
 </nb-card>
 <div [hidden]="!buildstarted && showchallenges" id="terminal"></div>
 
-<nb-card *ngIf="showchallenges">
+<nb-card [hidden]="!showchallenges">
   <nb-card-body>
     <p>Challenges</p>
     <form #form="ngForm" aria-labelledby="title">

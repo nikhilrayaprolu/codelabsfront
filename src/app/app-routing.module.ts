@@ -20,8 +20,8 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: './auth/auth.module#NgxAuthModule',
   },
-  { path: '', canActivate: [AuthGuard], redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: '**', canActivate: [AuthGuard], redirectTo: 'dashboard' },
+  { path: '', canActivate: [AuthGuard], redirectTo: 'pages', pathMatch: 'full' },
+  { path: '**', canActivate: [AuthGuard], redirectTo: 'pages' },
 ];
 
 const config: ExtraOptions = {

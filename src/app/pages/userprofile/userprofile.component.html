@@ -1,0 +1,78 @@
+<nb-card>
+  <nb-card-body>
+    <form #form="ngForm" aria-labelledby="title">
+      <div class="form-control-group">
+        <label class="label" for="first-name">First Name:</label>
+        <input nbInput
+               fullWidth
+               type="text"
+               id="first-name"
+               [(ngModel)]="profile.first_name"
+               name="firstname"
+               placeholder="First Name"
+               autofocus>
+      </div>
+      <div class="form-control-group">
+        <label class="label" for="last-name">Last Name:</label>
+        <input nbInput
+               fullWidth
+               type="text"
+               id="last-name"
+               [(ngModel)]="profile.last_name"
+               name="lastname"
+               placeholder="Last Name"
+               autofocus>
+      </div>
+      <div class="form-control-group">
+        <label class="label" for="institute">Institute Code:</label>
+        <input nbInput
+               fullWidth
+               type="text"
+               id="institute"
+               [(ngModel)]="profile.alloted_institute_code"
+               name="Institute code"
+               placeholder="Institute Code"
+               autofocus>
+      </div>
+      <div class="form-control-group">
+        <label class="label" for="gender">Gender:</label>
+        <input nbInput
+               fullWidth
+               type="text"
+               id="gender"
+               [(ngModel)]="profile.gender"
+               name="gender"
+               placeholder="M for Male, F for female, O for other"
+               autofocus>
+      </div>
+      <div class="form-control-group">
+        <label class="label" for="email">Email:</label>
+        <input nbInput
+               fullWidth
+               type="text"
+               id="email"
+               [(ngModel)]="profile.email"
+               name="email"
+               placeholder="Email"
+               autofocus>
+      </div>
+      <div class="form-control-group">
+        <label class="label" for="contact-number">contact number:</label>
+        <input nbInput
+               fullWidth
+               type="text"
+               id="contact-number"
+               [(ngModel)]="profile.contact_number"
+               name="contact number"
+               placeholder="Contact Number"
+               autofocus>
+      </div>
+      <button nbButton
+              fullWidth
+              (click)="onprofilesave()"
+              >
+        Update
+      </button>
+    </form>
+  </nb-card-body>
+</nb-card>

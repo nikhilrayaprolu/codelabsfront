@@ -22,3 +22,33 @@
 .tab {
   display: inline-block; color: #FFF; cursor: pointer; position: relative; padding: 0 15px; text-align: center;
 }
+
+
+img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+@media screen and (min-width: 320px){
+  #iframe-embed {
+    height: 600px;
+    width: 100%
+  }
+}
+@media screen and (min-width: 480px){
+  #iframe-embed {
+    height: 600px;
+    width: 100%
+  }
+}
+@media screen and (min-width: 640px){
+  #iframe-embed {
+    height: 600px;
+    width: 100%
+  }
+}
+@media all and (max-width: 1690px) {
+  #iframe-embed {
+    height: 600px;
+    width: 100%
+  }
+}
