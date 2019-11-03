@@ -72,7 +72,6 @@ export class EdittrackComponent implements OnInit {
     this.trackslistservice.gettrack(trackid).subscribe((result: any) => {
       this.track = result.track;
       this.challenges = result.challenges;
-      console.log(this.challenges)
     })
 
   }
@@ -106,7 +105,6 @@ export class EdittrackComponent implements OnInit {
         this.showchallenges = 1;
       }
       this.challengeindex += 1;
-      console.log(this.challenges)
     }
   }
   previouschallenge() {
@@ -115,7 +113,6 @@ export class EdittrackComponent implements OnInit {
     else if (this.challengeindex === 0) {
       this.showchallenges = 0;
       this.challengeindex = -1;
-      console.log(this.challenges)
     }
   }
   removechallenge(challengeindex) {
@@ -148,8 +145,15 @@ export class EdittrackComponent implements OnInit {
     this.showchallenges = 0
   }
   edittrackchallenges () {
+    this.challengeindex = 1;
     this.showchallenges = 1;
-    this.challengeindex = 0;
+    console.log("I am out")
+    //Temporary fix for the bug, need to fix the bug
+    setTimeout(() => {
+      this.challengeindex = 0
+      console.log("I am again out")
+    }, 1000);
+    console.log(this.challenges);
   }
   public files: NgxFileDropEntry[] = [];
   public dropped(files: NgxFileDropEntry[]) {

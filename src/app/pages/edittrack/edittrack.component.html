@@ -22,7 +22,7 @@
       <div *ngIf="track.labtype == 'colab'">
         <div class="form-control-group">
           <label class="label" for="input-colab">Link to Google Colab:</label>
-          <input type="text" id="input-colab" nbInput fullWidth fieldSize="medium" placeholder="Colab Link" name="colab{{trackindex}}" [(ngModel)]="tracks[trackindex].colablink">
+          <input type="text" id="input-colab" nbInput fullWidth fieldSize="medium" placeholder="Colab Link" name="colab{{trackindex}}" [(ngModel)]="track.colablink">
         </div>
       </div>
       <div *ngIf="track.labtype == 'own'">
@@ -81,7 +81,7 @@
       </div>
       <div *ngIf="track.scenario === 'iframe-terminal'">
         <input type="text" id="input-scenario-options-3" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option" [(ngModel)]="track.scenario_data.home_directory">
-        <input type="text" id="input-scenario-options-4" nbInput fullWidth fieldSize="medium" placeholder="Port" name="scenario-option" [(ngModel)]="track.scenario_data.port">
+        <input type="text" id="input-scenario-options-4" nbInput fullWidth fieldSize="medium" placeholder="Port" name="scenario-option-2" [(ngModel)]="track.scenario_data.port">
       </div>
       <div *ngIf="track.scenario === 'iframe-editor'">
         <input type="text" id="input-scenario-options-5" nbInput fullWidth fieldSize="medium" placeholder="Home Directory" name="scenario-option" [(ngModel)]="track.scenario_data.home_directory">
@@ -100,7 +100,7 @@
 </nb-card>
 <div [hidden]="!buildstarted && showchallenges" id="terminal"></div>
 
-<nb-card [hidden]="!showchallenges">
+<nb-card *ngIf="showchallenges">
   <nb-card-body>
     <p>Challenges</p>
     <form #form="ngForm" aria-labelledby="title">

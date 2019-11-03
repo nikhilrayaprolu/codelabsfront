@@ -4,8 +4,7 @@
   <div *ngIf="container_colab_webview">
     <button nbButton (click)="startcolab()">Start Colab Notebook</button>
   </div>
-  <button nbButton class="float-right" (click)="nextchallenge()">Next Challenge</button>
-  <button nbButton class="float-right" (click)="previouschallenge()">Previous Challenge</button>
+  <button nbButton class="float-right"  *ngIf="challenges.length" (click)="nextchallenge()">Challenges</button>
 
 </div>
 <div [hidden]="!showchallenges">
@@ -75,7 +74,7 @@
             </div>
           </div>
         </div>
-        <div id="iframe-embed">
+        <div id="iframe-embed" [hidden]="!showingiframe">
           <iframe id="iframe-block" style="height: 100%; width: 100%"></iframe>
         </div>
         <div id="bottom-term">

@@ -54,6 +54,7 @@ export class LabnewComponent implements OnDestroy {
     this.tracks.push(this.cloneobject(this.newtrack));
   }
   addNewChallenge(track) {
+    console.log(track)
     const challenge_position = track.challenges.length
     let new_challenge = this.cloneobject(this.newchallenge)
     new_challenge['challenge_position'] = challenge_position;
@@ -66,7 +67,7 @@ export class LabnewComponent implements OnDestroy {
     this.tracks.pop()
   }
   saveimageconfig() {
-    this.newlabservice.savelab(this.newlab).subscribe((result: any) => {
+    this.newlabservice.savelab(this.newtrack).subscribe((result: any) => {
       console.log(result);
     })
   }
